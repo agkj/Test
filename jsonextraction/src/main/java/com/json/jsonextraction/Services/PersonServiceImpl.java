@@ -14,23 +14,26 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class PersonServiceImpl implements PersonService{
+public class PersonServiceImpl {
 
     @Autowired
     private PersonRepository personRepository;
 
 
-    private static final Logger loggerResponse = LoggerFactory.getLogger(PersonServiceImpl.class);
+    private static final Logger combinedJson = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Override
-    public Boolean dateCompare(PersonDTO personDTO) {
+
+    public Boolean dateCompare(String postBodyJson) {
 
         try {
-            String requestBodyJson = objectMapper.writeValueAsString(new ExtractionResponse("Person added",true));
-            loggerResponse.info(requestBodyJson);
+            String responseBodyJson = objectMapper.writeValueAsString(new ExtractionResponse("Person Added",true));
+
+            String combinedPayload = String.format(" \"postPayload\": %s, \n \"responsePayload\": %s", postBodyJson, responseBodyJson);
+
+            combinedJson.info(combinedPayload);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

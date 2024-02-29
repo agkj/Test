@@ -3,48 +3,32 @@
     <!-- Define log pattern -->
     <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
 
-    <!--Appender-->
-    <appender name="POST_FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${user.home}/Desktop/post_requests.log</file>
+    <appender name="AUDIT_FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${user.home}/Desktop/audit_logs.log</file>
         <encoder>
-            <pattern>${LOG_PATTERN}</pattern>
+            <pattern>
+                %n
+                {
+                    "dateTime" : "%d{yyyy-MM-dd HH:mm:ss.SSS}",
+                    "thread": "[%thread]",
+                    "level" : "%-5level",
+                    "logger" : "%logger{36}",
+                %msg
+                }
+
+            </pattern>
         </encoder>
     </appender>
 
-    <appender name="RESPONSE_FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${user.home}/Desktop/response_request.log</file>
-        <encoder>
-            <pattern>${LOG_PATTERN}</pattern>
-        </encoder>
-    </appender>
-
-
-
-
-    <!-- Logger for POST requests -->
-    <logger name="com.json.jsonextraction.Controllers.PersonController" level="INFO" additivity="false">
-        <appender-ref ref="POST_FILE" />
-    </logger>
     <!-- Logger for RESPONSE requests -->
-    <logger name="com.json.jsonextraction.Services.PersonService" level="INFO" additivity="false" >
-        <appender-ref ref="RESPONSE_FILE" />
+    <logger name="com.json.jsonextraction.Services.PersonService" level="INFO"  >
+        <appender-ref ref="AUDIT_FILE" />
     </logger>
 
-
-<!--    &lt;!&ndash; Define log file location &ndash;&gt;-->
-<!--    <property name="LOG_FILE" value="${user.home}/Desktop/post_request.log" />-->
-
-<!--    &lt;!&ndash; Appenders &ndash;&gt;-->
-<!--    <appender name="FILE" class="ch.qos.logback.core.FileAppender">-->
-<!--        <file>${LOG_FILE}</file>-->
-<!--        <encoder>-->
-<!--            <pattern>${LOG_PATTERN}</pattern>-->
-<!--        </encoder>-->
-<!--    </appender>-->
 
     <!-- Root Logger -->
     <root level="INFO">
-        <appender-ref ref="RESPONSE_FILE" />
+        <appender-ref ref="AUDIT_FILE" />
 
 
         <!--        <appender-ref ref="FILE" />-->

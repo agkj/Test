@@ -30,11 +30,13 @@ public class PersonController {
     public ExtractionResponse postPerson(@RequestBody PersonDTO personDTO){
 
 
-        Boolean closeToDate =  personServiceImpl.dateCompare(personDTO);
+
         try {
-            String requestBodyJson = objectMapper.writeValueAsString(personDTO);
-            System.out.println(requestBodyJson);
-            loggerPost.info(requestBodyJson);
+
+            //pass the logs into service class
+            String postBodyJson = objectMapper.writeValueAsString(personDTO);
+            Boolean postBodyLog = personServiceImpl.dateCompare(postBodyJson);
+
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -42,7 +44,7 @@ public class PersonController {
 
 
 
-        return new ExtractionResponse("Person added ",closeToDate);
+        return new ExtractionResponse("Person added ",true);
     }
 
 
